@@ -1,5 +1,5 @@
-import requests
 from flask import Flask, request
+import requests
 import os
 
 app = Flask(__name__)
@@ -14,14 +14,18 @@ def verify():
 @app.route("/webhook", methods=["POST"])
 def webhook():
     data = request.get_json()
-    print("📩 Incoming message:", data)
+    print("📩 Incoming message from Meta:", data)
 
-    # Forward message to Make.com webhook
+    # Make.com Webhook URL
     make_url = "https://hook.eu2.make.com/h37ptg8j5uwyyvm6bv714vy5837f2tqr"
     headers = {"Content-Type": "application/json"}
+
     try:
+        # Send data to Make.com
         response = requests.post(make_url, json=data, headers=headers)
-        print(f"✅ Forwarded to Make.com: {response.status_code}")
+        
+        # Log the response status and content from Make
+        print(f"✅ Sent to Make.com: {response.status_code} - {response.text}")
     except Exception as e:
         print(f"❌ Failed to send to Make.com: {e}")
 
